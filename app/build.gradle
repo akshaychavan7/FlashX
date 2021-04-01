@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.akshaychavan.mydict"
+        applicationId "com.akshaychavan.flashx"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -53,11 +53,19 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:25.0.1'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+
+    // Google Account Login
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+
     implementation 'pub.devrel:easypermissions:0.3.0'
+
+    // Google API Client Library for Java
     implementation('com.google.api-client:google-api-client-android:1.23.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+
+
     implementation('com.google.apis:google-api-services-sheets:v4-rev581-1.25.0') {
         exclude group: 'org.apache.httpcomponents'
     }

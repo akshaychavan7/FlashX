@@ -1,4 +1,4 @@
-package com.akshaychavan.mydict.fragments;
+package com.akshaychavan.FlashX.fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.akshaychavan.mydict.R;
+import com.akshaychavan.FlashX.R;
 
 /**
  * A simple {@link Fragment} subclass.

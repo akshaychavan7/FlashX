@@ -1,4 +1,4 @@
-package com.akshaychavan.mydict;
+package com.akshaychavan.FlashX;
 
 import org.junit.Test;
 

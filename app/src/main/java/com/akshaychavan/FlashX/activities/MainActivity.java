@@ -1,4 +1,4 @@
-package com.akshaychavan.mydict.activities;
+package com.akshaychavan.FlashX.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -10,12 +10,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.akshaychavan.mydict.R;
-import com.akshaychavan.mydict.fragments.DecksFragment;
-import com.akshaychavan.mydict.fragments.PracticeFragment;
-import com.akshaychavan.mydict.fragments.ProgressFragment;
+import com.akshaychavan.FlashX.R;
+import com.akshaychavan.FlashX.fragments.DecksFragment;
+import com.akshaychavan.FlashX.fragments.PracticeFragment;
+import com.akshaychavan.FlashX.fragments.ProgressFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
