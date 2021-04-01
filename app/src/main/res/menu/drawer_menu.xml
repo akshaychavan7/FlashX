@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nv_reset"
+            android:icon="@drawable/reset_icon_24"
+            android:title="Reset all Decks"
+            />
+
+        <item android:id="@+id/nv_export"
+            android:icon="@drawable/export_icon_24"
+            android:title="Export to Excel"/>
+
+        <item android:id="@+id/nv_backup"
+            android:icon="@drawable/backup_icon_24"
+            android:title="Backup"/>
+
+        <item android:id="@+id/nv_restore"
+            android:icon="@drawable/restore_icon_24"
+            android:title="Restore"/>
+
+        <item android:id="@+id/nv_about"
+            android:icon="@drawable/about_icon_24"
+            android:title="About"/>
+
+    </group>
+
+</menu>

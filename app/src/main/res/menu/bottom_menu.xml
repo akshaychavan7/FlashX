@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nv_decks"
+            android:icon="@drawable/deck_icon_24"
+            android:title="Decks"
+            />
+
+        <item android:id="@+id/nv_practice"
+            android:icon="@drawable/revise_icon_24"
+            android:title="Practice"/>
+
+        <item android:id="@+id/nv_progress"
+            android:icon="@drawable/progress_icon_24"
+            android:title="Progress"/>
+
+
+    </group>
+
+</menu>
