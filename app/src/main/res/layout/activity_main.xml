@@ -25,7 +25,7 @@
                 android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="myDict"
+                android:text="FlashX"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:textSize="18dp"
@@ -34,6 +34,11 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+<!--        <com.google.android.gms.common.SignInButton-->
+<!--            android:id="@+id/sign_in_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
         <!--  MainActivity Body      -->
         <RelativeLayout
             android:layout_width="match_parent"

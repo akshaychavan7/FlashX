@@ -1,4 +1,4 @@
-package com.akshaychavan.FlashX;
+package com.akshaychavan.flashx;
 
 import android.content.Context;
 

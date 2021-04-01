@@ -1,4 +1,4 @@
-package com.akshaychavan.FlashX.fragments;
+package com.akshaychavan.flashx.fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.akshaychavan.FlashX.R;
+import com.akshaychavan.flashx.R;
 
 /**
  * A simple {@link Fragment} subclass.
