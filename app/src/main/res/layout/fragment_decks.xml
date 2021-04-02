@@ -7,25 +7,25 @@
     >
 
     <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_decks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp" />
+<!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:gravity="center"-->
-<!--        android:text="Decks Fragment" />-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <include
-            layout="@layout/deck_layout"/>
-        <include
-            layout="@layout/deck_layout"/>
-        <include
-            layout="@layout/deck_layout"/>
-        <include
-            layout="@layout/deck_layout"/>
-    </LinearLayout>
+<!--        android:orientation="vertical">-->
+<!--        <include-->
+<!--            layout="@layout/deck_layout"/>-->
+<!--        <include-->
+<!--            layout="@layout/deck_layout"/>-->
+<!--        <include-->
+<!--            layout="@layout/deck_layout"/>-->
+<!--        <include-->
+<!--            layout="@layout/deck_layout"/>-->
+<!--    </LinearLayout>-->
 
 
 </ScrollView>

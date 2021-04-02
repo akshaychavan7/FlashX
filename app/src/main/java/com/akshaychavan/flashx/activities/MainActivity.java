@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import com.akshaychavan.flashx.R;
 import com.akshaychavan.flashx.fragments.DecksFragment;
 import com.akshaychavan.flashx.fragments.PracticeFragment;
 import com.akshaychavan.flashx.fragments.ProgressFragment;
+import com.akshaychavan.flashx.pojo.CardPojo;
+import com.akshaychavan.flashx.utility.GlobalCode;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +35,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -46,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     GoogleSignInClient mGoogleSignInClient;
     TextView tvUsername, tvEmail;
     ImageView ivProfileIcon;
+
+    public static Context mycontext;
+
+    GlobalCode globalCode;
 
 //    @Override
 //    protected void onStart() {
@@ -84,10 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-
         bindVariables();
         bindEvents();
-
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -114,63 +131,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            e.printStackTrace();
 //        }
 
-    }
+//        for(String deckName: GlobalCode.getInstance(MainActivity.this).getDecksNamesList()) {
+//            for(CardPojo card: GlobalCode.getInstance(this).getDeckCards(deckName)) {
+//                Log.e(TAG, deckName+" >>> "+card.getWord());
+//            }
+//        }
 
-//    public void getSheetResponse() throws IOException, GeneralSecurityException {
-//        Log.e(TAG, "Setting up sheets");
-//
-//        // The ID of the spreadsheet to retrieve data from.
-//        String spreadsheetId = "1LOYACk3WgoaQjQPLqfxUwUtyMCE2rau7idJBreUb5Hc"; // TODO: Update placeholder value.
-//
-//        // The A1 notation of the values to retrieve.
-//        String range = "A2:C2"; // TODO: Update placeholder value.
-//
-//        // How values should be represented in the output.
-//        // The default render option is ValueRenderOption.FORMATTED_VALUE.
-//        String valueRenderOption = ""; // TODO: Update placeholder value.
-//
-//        // How dates, times, and durations should be represented in the output.
-//        // This is ignored if value_render_option is
-//        // FORMATTED_VALUE.
-//        // The default dateTime render option is [DateTimeRenderOption.SERIAL_NUMBER].
-//        String dateTimeRenderOption = ""; // TODO: Update placeholder value.
-//
-//        Sheets sheetsService = createSheetsService();
-//        Sheets.Spreadsheets.Values.Get request =
-//                sheetsService.spreadsheets().values().get(spreadsheetId, range);
-//        request.setValueRenderOption(valueRenderOption);
-//        request.setDateTimeRenderOption(dateTimeRenderOption);
-//
-//        ValueRange response = request.execute();
-//
-//        // TODO: Change code below to process the `response` object:
-//        Log.e(TAG, ">>>"+(response==null));
-//    }
+    }       // end onCreate()
 
-//    public static Sheets createSheetsService() throws IOException, GeneralSecurityException {
-//        HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-//        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-//
-//        // TODO: Change placeholder below to generate authentication credentials. See
-//        // https://developers.google.com/sheets/quickstart/java#step_3_set_up_the_sample
-//        //
-//        // Authorize using one of the following scopes:
-//        //   "https://www.googleapis.com/auth/drive"
-//        //   "https://www.googleapis.com/auth/drive.file"
-//        //   "https://www.googleapis.com/auth/drive.readonly"
-//        //   "https://www.googleapis.com/auth/spreadsheets"
-//        //   "https://www.googleapis.com/auth/spreadsheets.readonly"
-//        GoogleCredential credential = null;
-//
-//        return new Sheets.Builder(httpTransport, jsonFactory, credential)
-//                .setApplicationName("Google-SheetsSample/0.1")
-//                .build();
-//    }
 
 
 
     private void bindVariables() {
 //        signInButton = findViewById(R.id.sign_in_button);
+
+        mycontext = this;
 
         // side navigation tabs
         mi_resetdecks = navigationView.getMenu().getItem(0);
@@ -289,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nv_decks:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DecksFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DecksFragment(MainActivity.this)).commit();
                 break;
             case R.id.nv_practice:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PracticeFragment()).commit();
@@ -305,4 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
 }

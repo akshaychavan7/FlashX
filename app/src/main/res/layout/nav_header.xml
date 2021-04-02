@@ -16,33 +16,34 @@
         android:paddingTop="2dp"
         android:paddingRight="10dp">
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_finiq_logo"-->
-<!--                    android:layout_width="400dp"-->
-<!--                    android:layout_height="110dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:src="@mipmap/abstract_background" />-->
+                <ImageView
+                    android:id="@+id/iv_app_logo"
+                    android:layout_width="400dp"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/flashx_logo" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Flash"
-                android:textStyle="italic"
-                android:fontFamily="monospace"
-                android:textColor="@color/colorWhite"
-                android:textSize="60dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="X"
-                android:textColor="#F44336"
-                android:textSize="75dp" />
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Flash"-->
+<!--                android:textStyle="italic"-->
+<!--                android:fontFamily="monospace"-->
+<!--                android:textColor="@color/colorWhite"-->
+<!--                android:textSize="60dp" />-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="X"-->
+<!--                android:textColor="#F44336"-->
+<!--                android:textSize="75dp" />-->
+<!--        </LinearLayout>-->
 
         <TextView
             android:layout_width="match_parent"
