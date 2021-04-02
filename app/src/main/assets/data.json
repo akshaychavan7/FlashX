@@ -3,8 +3,9 @@
     {
       "Word": "voracious",
       "Class": "adjective",
-      "Meaning": "1. Wanting or devouring great quantities of food 2. Engaging in an activity with great enthusiasm",
-      "Example": "1. a voracious appetite 2. she is a voracious reader",
+      "Meaning": "1. Wanting or devouring great quantities of food \n2. Engaging in an activity with great enthusiasm",
+      "Synonyms": "Synonym",
+      "Example": "1. a voracious appetite \n2. she is a voracious reader",
       "Mnemonic": "carnivore, herbivore -> vore is eating; voracious -> always eats large quantities of food",
       "Image URL": "",
       "IsMastered": "Yes"
@@ -13,6 +14,7 @@
       "Word": "indiscriminate",
       "Class": "adjective",
       "Meaning": "done at random or without careful judgement",
+      "Synonyms": "Synonym",
       "Example": "The indiscriminate use of antibiotics can cause a problem",
       "Mnemonic": "discriminate- \u092d\u0947\u0926\u092d\u093e\u0935 \u0915\u0930\u0928\u0947 -> indiscriminate -> \u092d\u0947\u0926\u092d\u093e\u0935 \u0928 \u0915\u0930\u0924\u093e randomly decision \u0918\u0947\u090a\u0928 judgement \u0926\u0947\u0908\u0932",
       "Image URL": "",
@@ -22,6 +24,7 @@
       "Word": "eminent",
       "Class": "adjective",
       "Meaning": "(used about a person) famous and important; highly respected",
+      "Synonyms": "Synonym",
       "Example": "Sachin is an eminent personality known for his great sportsmanship",
       "Mnemonic": "Eminem -> respect",
       "Image URL": "",
@@ -33,6 +36,7 @@
       "Word": "eminent",
       "Class": "adjective",
       "Meaning": "(used about a person) famous and important; highly respected",
+      "Synonyms": "Synonym",
       "Example": "Sachin is an eminent personality known for his great sportsmanship",
       "Mnemonic": "Eminem -> respect",
       "Image URL": "",
@@ -44,10 +48,11 @@
       "Word": "eminent",
       "Class": "adjective",
       "Meaning": "(used about a person) famous and important; highly respected",
+      "Synonyms": "Synonym",
       "Example": "Sachin is an eminent personality known for his great sportsmanship",
       "Mnemonic": "Eminem -> respect",
       "Image URL": "",
-      "IsMastered": "Yes"
+      "IsMastered": "No"
     }
   ],
   "Test Deck 3": [
@@ -55,6 +60,7 @@
       "Word": "eminent",
       "Class": "adjective",
       "Meaning": "(used about a person) famous and important; highly respected",
+      "Synonyms": "Synonym",
       "Example": "Sachin is an eminent personality known for his great sportsmanship",
       "Mnemonic": "Eminem -> respect",
       "Image URL": "",
@@ -66,6 +72,7 @@
       "Word": "eminent",
       "Class": "adjective",
       "Meaning": "(used about a person) famous and important; highly respected",
+      "Synonyms": "Synonym",
       "Example": "Sachin is an eminent personality known for his great sportsmanship",
       "Mnemonic": "Eminem -> respect",
       "Image URL": "",
@@ -77,6 +84,7 @@
       "Word": "eminent",
       "Class": "adjective",
       "Meaning": "(used about a person) famous and important; highly respected",
+      "Synonyms": "Synonym",
       "Example": "Sachin is an eminent personality known for his great sportsmanship",
       "Mnemonic": "Eminem -> respect",
       "Image URL": "",

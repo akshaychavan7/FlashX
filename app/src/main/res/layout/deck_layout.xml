@@ -100,6 +100,7 @@
                         >
 
                         <TextView
+                            android:id="@+id/tv_practice_btn"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
                             android:layout_weight="1"
@@ -111,6 +112,7 @@
                             android:elevation="1dp"
                             android:layout_margin="5dp"/>
                         <TextView
+                            android:id="@+id/tv_reset_btn"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
                             android:layout_weight="1"
@@ -148,6 +150,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_view_cards_btn"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:text="VIEW CARDS"

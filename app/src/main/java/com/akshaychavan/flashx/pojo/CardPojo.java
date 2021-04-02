@@ -18,6 +18,9 @@ public class CardPojo {
     @SerializedName("Meaning")
     @Expose
     private String meaning;
+    @SerializedName("Synonyms")
+    @Expose
+    private String synonyms;
     @SerializedName("Example")
     @Expose
     private String example;
@@ -27,14 +30,6 @@ public class CardPojo {
     @SerializedName("Image URL")
     @Expose
     private String imageURL;
-
-    public String getIsMastered() {
-        return isMastered;
-    }
-
-    public void setIsMastered(String isMastered) {
-        this.isMastered = isMastered;
-    }
 
     @SerializedName("IsMastered")
     @Expose
@@ -86,6 +81,23 @@ public class CardPojo {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+
+    public String getSynonyms() {
+        return synonyms;
+    }
+
+    public void setSynonyms(String synonyms) {
+        this.synonyms = synonyms;
+    }
+
+    public String getIsMastered() {
+        return isMastered;
+    }
+
+    public void setIsMastered(String isMastered) {
+        this.isMastered = isMastered;
     }
 
 }
