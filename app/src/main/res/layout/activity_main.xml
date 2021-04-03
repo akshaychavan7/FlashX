@@ -93,6 +93,16 @@
         android:background="@color/background_main"
         app:itemIconTint="@drawable/nav_drawer_tab_color"
         app:itemTextColor="@drawable/nav_drawer_tab_color"
-        />
+        >
+        <TextView
+            android:id="@+id/tv_madeby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:textSize="13dp"
+            android:text="Developed with ❤ by Akshay Chavan"/>
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

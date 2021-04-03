@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
+        <item android:id="@+id/nv_add_deck"
+            android:icon="@drawable/add_icon_24"
+            android:title="Create new Deck"
+            />
+
         <item android:id="@+id/nv_reset"
             android:icon="@drawable/reset_icon_24"
             android:title="Reset all Decks"

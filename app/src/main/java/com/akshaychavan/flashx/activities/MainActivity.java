@@ -2,6 +2,7 @@ package com.akshaychavan.flashx.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MenuItem mi_decks, mi_practice, mi_progress,mi_resetdecks, mi_exporttoexcel, mi_backup, mi_restore, mi_about;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
-    TextView tvUsername, tvEmail;
+    TextView tvUsername, tvEmail, tvMadeBy;
     ImageView ivProfileIcon;
 
     public static Context mycontext;
@@ -154,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mi_restore = navigationView.getMenu().getItem(3);
         mi_about = navigationView.getMenu().getItem(4);
 
+        tvMadeBy = navigationView.findViewById(R.id.tv_madeby);
+
         // Bottom navigation tabs
         mi_decks = bottomNavigationView.getMenu().getItem(0);
         mi_practice = bottomNavigationView.getMenu().getItem(1);
@@ -177,12 +181,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        });
 
+        tvMadeBy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://www.linkedin.com/in/akshaychavan7/"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()) {
+                    case R.id.nv_add_deck:
+                        openAddNewDeckIntent();
+                        break;
                     case R.id.nv_reset: break;
                     case R.id.nv_export: break;
                     case R.id.nv_backup: break;
@@ -282,5 +298,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    public void openAddNewDeckIntent() {
+        LayoutInflater li = LayoutInflater.from(MainActivity.this);
+        View view = li.inflate(R.layout.create_new_deck_layout, null);
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this, R.style.CustomDialog);
+        alertDialogBuilder.setView(view);
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+    }
 
 }
