@@ -4,4 +4,9 @@
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="deck_options">
+        <item>Add New Card</item>
+        <item>Edit</item>
+    </string-array>
 </resources>

@@ -2,6 +2,7 @@ package com.akshaychavan.flashx.utility;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.widget.EditText;
 
 import com.akshaychavan.flashx.activities.MainActivity;
 import com.akshaychavan.flashx.pojo.CardPojo;
@@ -29,12 +30,31 @@ public class GlobalCode {
     JSONObject deckIndex = new JSONObject();
     ArrayList<String> decksNamesList = new ArrayList<>();
     Context mContext;
+    String imagePath = null;
+    EditText etcardImagePath;
 
 
     String colors[] = {"#2196F3", "#7E57C2", "#43A047","#F44336", "#4DD0E1", "#FF9800", "#7E57C2", "#AD1457", "#FFEA00"};
 
     public GlobalCode(Context context) {
         mContext = context;
+    }
+
+    public EditText getEtcardImagePath() {
+        return etcardImagePath;
+    }
+
+    public void setEtcardImagePath(EditText etcardImagePath) {
+        this.etcardImagePath = etcardImagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+        this.etcardImagePath.setText(this.imagePath);
     }
 
     public GlobalCode() {

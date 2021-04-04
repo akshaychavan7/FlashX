@@ -39,6 +39,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jaiselrahman.filepicker.activity.FilePickerActivity;
+import com.jaiselrahman.filepicker.model.MediaFile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static Context mycontext;
 
-    GlobalCode globalCode;
+    GlobalCode globalCode = GlobalCode.getInstance();
 
 //    @Override
 //    protected void onStart() {
@@ -236,6 +238,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
+
+        // for image picker
+        if(resultCode == RESULT_OK && data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES)!=null) {
+            ArrayList<MediaFile> mediaFiles = data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES);
+
+            String path = mediaFiles.get(0).getPath();
+            globalCode.setImagePath(path);
+            Toast.makeText(MainActivity.this, "Path >>"+path, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -299,13 +310,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void openAddNewDeckIntent() {
-        LayoutInflater li = LayoutInflater.from(MainActivity.this);
-        View view = li.inflate(R.layout.create_new_deck_layout, null);
 
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this, R.style.CustomDialog);
-        alertDialogBuilder.setView(view);
-        alertDialogBuilder.create();
-        alertDialogBuilder.show();
     }
+
 
 }
