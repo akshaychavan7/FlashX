@@ -1,6 +1,8 @@
 package com.akshaychavan.flashx.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,6 +19,7 @@ import com.akshaychavan.flashx.activities.MainActivity;
 import com.akshaychavan.flashx.adapters.DecksListAdapter;
 import com.akshaychavan.flashx.pojo.DeckPojo;
 import com.akshaychavan.flashx.utility.GlobalCode;
+import com.akshaychavan.flashx.utility.MyDatabaseHelper;
 
 import java.util.ArrayList;
 
@@ -92,14 +95,45 @@ public class DecksFragment extends Fragment {
     public void performFragmentWork() {
 
         // Firstly, fetch all the decks from local storage
-        globalCode.fetchDecksFromLocalStorage();
+//        globalCode.fetchDecksFromLocalStorage();
+//
+//
+//
+//        for(String deckName: globalCode.getDecksNamesList()) {
+//            decksList.add(new DeckPojo(deckName, globalCode.getMasteredWordsCount(deckName), globalCode.getDeckCards(deckName).size()));
+//        }
+
+        MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance(mContext);
+
+        SQLiteDatabase db = myDatabaseHelper.getDatabase();
+
+        // Query ==> SELECT Deck_Name, COUNT(Deck_Name) FROM Words_List GROUP BY Deck_Name;                                         ==> this will return deckname and it's total cards count
+        // Query ==> SELECT Deck_Name, COUNT(Deck_Name) from "Words_List" WHERE Is_Mastered="Yes" GROUP BY Deck_Name;               ==> this will return deckname and it's mastered cards count
+
+        String query1  = "SELECT Deck_Name, COUNT(Deck_Name) FROM Words_List GROUP BY Deck_Name;";
+        String query2  = "SELECT Deck_Name, COUNT(Deck_Name) from \"Words_List\" WHERE Is_Mastered=\"Yes\" GROUP BY Deck_Name;";
+
+        Cursor cursor1 = db.rawQuery(query1, null);
+        Cursor cursor2 = db.rawQuery(query2, null);
 
 
 
-        for(String deckName: globalCode.getDecksNamesList()) {
-            decksList.add(new DeckPojo(deckName, globalCode.getMasteredWordsCount(deckName), globalCode.getDeckCards(deckName).size()));
+        // DB Columns ==> "_id", "Deck_Name", "Word", "Definition", "Class", "Synonyms", "Examples", "Mnemonic", "Image_URL", "Is_Mastered"
+
+        while (cursor1.moveToNext()) {
+            cursor2.moveToNext();       // move cursor2 along with cursor1
+
+            String deckname = cursor1.getString(0);
+            int totalCardsCount = cursor1.getInt(1);
+            int masteredWordsCount;
+            if(cursor2.getCount() ==0) {
+                masteredWordsCount = 0;
+            }
+            else {
+                masteredWordsCount = cursor2.getInt(1);
+            }
+            decksList.add(new DeckPojo(deckname, masteredWordsCount, totalCardsCount));
         }
-
 
         // Passing data to Adapter
         decksListAdapter = new DecksListAdapter(decksList, getContext());     // by default shares should be loaded

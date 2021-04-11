@@ -34,8 +34,6 @@ import retrofit2.Response;
 
 /**
  * Created by Akshay Chavan on 15,February,2021
- * akshay.chavan@finiq.com
- * FinIQ Consulting India
  */
 public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.CardViewHolder> implements Filterable {
 

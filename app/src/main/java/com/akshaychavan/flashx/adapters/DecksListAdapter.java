@@ -9,8 +9,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,12 +34,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.akshaychavan.flashx.R;
 import com.akshaychavan.flashx.activities.MainActivity;
 import com.akshaychavan.flashx.fragments.ViewCardsFragment;
+import com.akshaychavan.flashx.pojo.CardPojo;
 import com.akshaychavan.flashx.pojo.DeckPojo;
 import com.akshaychavan.flashx.pojo.Definition;
 import com.akshaychavan.flashx.pojo.WordDataPojo;
 import com.akshaychavan.flashx.utility.ApiClient;
 import com.akshaychavan.flashx.utility.ApiInterface;
 import com.akshaychavan.flashx.utility.GlobalCode;
+import com.akshaychavan.flashx.utility.MyDatabaseHelper;
 import com.google.android.material.button.MaterialButton;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
@@ -65,12 +65,13 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
     // New Card Popup Variables
     ImageView ivImageBrowser;
     EditText etImagePath, etWord, etWordDefinition, etWordSynonyms, etWordExample, etWordMnemonic;
+    TextView tvSaveCard, tvCancelCard, tvAddNextCard;
     MaterialButton verbBtn, adjBtn, nounBtn, idiomBtn;
-    private ArrayList<DeckPojo> mDecksList, mDecksListFull;
     ProgressBar progressBar;
+    String selectedWordClass;
+    AlertDialog addNewCardPopup;
+    private ArrayList<DeckPojo> mDecksList, mDecksListFull;
     ///////////////////////////
-
-
     public Filter assetSearchFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -155,7 +156,7 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         holder.ivDeckOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOptionsMenuPopup(v);
+                showOptionsMenuPopup(v, position);
             }
         });
 
@@ -180,14 +181,14 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         animation.start();
     }
 
-    public void showOptionsMenuPopup(View v) {
+    public void showOptionsMenuPopup(View v, int position) {
         PopupMenu popupMenu = new PopupMenu(mContext, v);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.deck_option_add_cards:
-                        openAddNewCardIntent();
+                        openAddNewCardIntent(position);
                         break;
                     case R.id.deck_option_edit:
                         break;
@@ -202,17 +203,20 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         popupMenu.show();
     }
 
-    public void openAddNewCardIntent() {
+    public void openAddNewCardIntent(int position) {
         LayoutInflater li = LayoutInflater.from(mContext);
         View view = li.inflate(R.layout.create_new_deck_layout, null);
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomDialog);
         alertDialogBuilder.setView(view);
-        alertDialogBuilder.create();
-        alertDialogBuilder.show();
+//        alertDialogBuilder.create();
+//        alertDialogBuilder.show();
+
+        addNewCardPopup = alertDialogBuilder.create();
+        addNewCardPopup.show();
 
         bindNewCardVariables(view);
-        bindNewCardEvents(view);
+        bindNewCardEvents(view, position);
     }
 
     public void bindNewCardVariables(View v) {
@@ -233,9 +237,15 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         etWordMnemonic = v.findViewById(R.id.et_word_mnemonic);
 
         progressBar = v.findViewById(R.id.progressBar);
+
+        tvSaveCard = v.findViewById(R.id.tv_save_card);
+        tvCancelCard = v.findViewById(R.id.tv_cancel_card);
+        tvAddNextCard = v.findViewById(R.id.tv_add_next_card);
+
+
     }
 
-    public void bindNewCardEvents(View v) {
+    public void bindNewCardEvents(View v, int position) {
         ivImageBrowser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -278,35 +288,101 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
             }
         });
 
-
-//        etWord.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                getWordDetails(s.toString());
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-
         etWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 String word = etWord.getText().toString();
-                if ( (!hasFocus) && word.length()>0 ) {
+                if ((!hasFocus) && word.length() > 0) {
 //                    Toast.makeText(mContext, "Got the focus", Toast.LENGTH_LONG).show();
                     getWordDetails(word);
                 }
             }
         });
 
+        tvSaveCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveCard(position);
+//                if (saveCard(position))
+//                    addNewCardPopup.dismiss();
+
+
+                // refresh fragment to see the changes    NOTE: here we are opening the MainActivity again to see the changes
+                Intent intent = new Intent(mContext, MainActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+        tvCancelCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewCardPopup.dismiss();
+            }
+        });
+
+        tvAddNextCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //save info first
+                saveCard(position);
+
+                // then clear the input fields for new input
+                etWord.setText("");
+                etWordDefinition.setText("");
+                etWordSynonyms.setText("");
+                etWordExample.setText("");
+                etWordMnemonic.setText("");
+                etImagePath.setText("");
+
+                selectedWordClass = null;
+
+            }
+        });
+
+    }
+
+
+    // to save card info into DB
+    public void saveCard(int deckPosition) {
+
+        if (!validateFields())
+            return;
+
+        CardPojo card = new CardPojo();
+
+        card.setWord(etWord.getText().toString());
+        card.setClass_(selectedWordClass);
+        card.setMeaning(etWordDefinition.getText().toString());
+        card.setSynonyms(etWordSynonyms.getText().toString());
+        card.setExample(etWordExample.getText().toString());
+        card.setMnemonic(etWordMnemonic.getText().toString());
+        card.setImageURL(etImagePath.getText().toString());
+
+        MyDatabaseHelper myDB = MyDatabaseHelper.getInstance(mContext);
+
+
+        myDB.addCardToDeck(mDecksList.get(deckPosition).getDeckTitle(), card);
+
+
+//        boolean cardAddResponseFlag = globalCode.addCardToDeck(card, deckPosition);
+//
+//        if (cardAddResponseFlag) {
+//            Toast.makeText(mContext, "Card added successfully!", Toast.LENGTH_SHORT).show();
+//            return true;
+//        } else {
+//            Toast.makeText(mContext, "Card already exists in the deck!", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+
+    }
+
+    // to check if required fields are blank or not
+    public boolean validateFields() {
+        if (etWord.getText().length() == 0 || etWordDefinition.getText().length() == 0 || selectedWordClass == null) {
+            Toast.makeText(mContext, "Word, Part of Speech Class and Definition are required fields!\nMake sure you input all the required fields", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
 
@@ -319,6 +395,8 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
                 adjBtn.setStrokeWidth(0);
                 nounBtn.setStrokeWidth(0);
                 idiomBtn.setStrokeWidth(0);
+
+                selectedWordClass = "verb";
                 break;
             case "adjective":
                 adjBtn.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#F44336")));
@@ -327,6 +405,8 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
                 verbBtn.setStrokeWidth(0);
                 nounBtn.setStrokeWidth(0);
                 idiomBtn.setStrokeWidth(0);
+
+                selectedWordClass = "adjective";
                 break;
             case "noun":
                 nounBtn.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#F44336")));
@@ -335,6 +415,8 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
                 verbBtn.setStrokeWidth(0);
                 adjBtn.setStrokeWidth(0);
                 idiomBtn.setStrokeWidth(0);
+
+                selectedWordClass = "noun";
                 break;
             case "idiom":
                 idiomBtn.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#F44336")));
@@ -343,6 +425,8 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
                 verbBtn.setStrokeWidth(0);
                 adjBtn.setStrokeWidth(0);
                 nounBtn.setStrokeWidth(0);
+
+                selectedWordClass = "idiom";
                 break;
         }
     }
@@ -395,7 +479,7 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
 
                     //Toast.makeText(mContext, "Class>>"+response.body().get(0).getMeanings().get(0).getPartOfSpeech().toLowerCase(), Toast.LENGTH_SHORT).show();
                     String wordClass = response.body().get(0).getMeanings().get(0).getPartOfSpeech().toLowerCase();
-                    if(wordClass.contains("verb")) {
+                    if (wordClass.contains("verb")) {
                         wordClass = "verb";
                     }
 
@@ -416,6 +500,7 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(mContext, "Word not found!", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     // Set details empty if word not found
                     etWordDefinition.setText("");
                     etWordSynonyms.setText("");
