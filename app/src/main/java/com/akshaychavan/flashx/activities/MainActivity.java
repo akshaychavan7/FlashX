@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         String query  = "UPDATE "+myDatabaseHelper.getTableName()+" set Is_Mastered = \"No\";";
 
-                        db.rawQuery(query, null);
+//                        db.rawQuery(query, null);
                         db.execSQL(query);
 
 

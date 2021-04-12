@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="center"
+        android:background="@drawable/card_border"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        app:strokeColor="#ECEBEB"
+        app:strokeWidth="1dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="top"
+            android:background="@drawable/notification_popup_top_color" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="RENAME DECK"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <ImageView
+                android:id="@+id/hr"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/gradient_line"
+                android:gravity="center_horizontal"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/white_bg_rounded"
+                android:elevation="3dp"
+                android:orientation="horizontal"
+                android:padding="7dp"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.2"
+                    android:background="@color/colorTransparent"
+                    android:src="@drawable/rename_icon_24" />
+
+                <EditText
+                    android:id="@+id/et_new_deck_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:background="@color/colorTransparent"
+                    android:hint="New Deck Name"
+                    android:padding="5dp"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/colorLightGrey"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:backgroundTint="#4CAF50"
+                    android:text="SAVE"
+                    android:layout_margin="5dp"
+                    />
+
+                <Button
+                    android:id="@+id/cancel"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:backgroundTint="#4CAF50"
+                    android:text="Cancel"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

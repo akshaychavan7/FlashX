@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -33,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.akshaychavan.flashx.R;
 import com.akshaychavan.flashx.activities.MainActivity;
+import com.akshaychavan.flashx.activities.PracticeActivity;
 import com.akshaychavan.flashx.fragments.ViewCardsFragment;
 import com.akshaychavan.flashx.pojo.CardPojo;
 import com.akshaychavan.flashx.pojo.DeckPojo;
@@ -69,8 +72,11 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
     MaterialButton verbBtn, adjBtn, nounBtn, idiomBtn;
     ProgressBar progressBar;
     String selectedWordClass;
-    AlertDialog addNewCardPopup;
+    AlertDialog addNewCardPopup, renameDeckPopup, deleteDeckPopup;
     private ArrayList<DeckPojo> mDecksList, mDecksListFull;
+    ///////////////////////////
+    MyDatabaseHelper myDatabaseHelper;
+    SQLiteDatabase myDB;
     ///////////////////////////
     public Filter assetSearchFilter = new Filter() {
         @Override
@@ -111,6 +117,10 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         Log.e(TAG, "Decks size>>" + decksList.size());
         mDecksListFull = new ArrayList<>(mDecksList);
         this.mContext = context;
+
+        // getting database
+        myDatabaseHelper = MyDatabaseHelper.getInstance(mContext);
+        myDB = myDatabaseHelper.getDatabase();
     }
 
     @NonNull
@@ -152,6 +162,29 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         });
 
 
+        holder.tvPracticeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Practice button clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, PracticeActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.tvResetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = "UPDATE Words_List SET Is_Mastered=\"No\" WHERE Deck_Name = \""+mDecksList.get(position).getDeckTitle()+"\";";
+                Log.e(TAG, "Query>>"+query);
+                myDB.execSQL(query);
+
+                // refresh
+                Intent intent = new Intent(mContext, MainActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+
         // open deck options menu
         holder.ivDeckOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +192,7 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
                 showOptionsMenuPopup(v, position);
             }
         });
+
 
     }       // end bindEvents
 
@@ -190,9 +224,11 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
                     case R.id.deck_option_add_cards:
                         openAddNewCardIntent(position);
                         break;
-                    case R.id.deck_option_edit:
+                    case R.id.deck_option_rename:
+                        openRenameDeckIntent(position);
                         break;
                     case R.id.deck_option_delete:
+                        openDeleteDeckIntent(position);
                         break;
                 }
                 return true;
@@ -336,6 +372,88 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
 
                 selectedWordClass = null;
 
+            }
+        });
+
+    }
+
+
+    public void openRenameDeckIntent(int position) {
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View view = li.inflate(R.layout.rename_deck_intent_layout, null);
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+        alertDialogBuilder.setView(view);
+//        alertDialogBuilder.create();
+//        alertDialogBuilder.show();
+
+        renameDeckPopup = alertDialogBuilder.create();
+        renameDeckPopup.show();
+
+
+        // binding popup variables and events
+
+        EditText etNewDeckName = view.findViewById(R.id.et_new_deck_name);
+        Button save = view.findViewById(R.id.save);
+        Button cancel = view.findViewById(R.id.cancel);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                renameDeckPopup.dismiss();
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = "UPDATE Words_List SET Deck_Name = \""+etNewDeckName.getText().toString().trim()+"\" WHERE Deck_Name=\""+ mDecksList.get(position).getDeckTitle() +"\";";
+                Log.e(TAG, "Query>>"+query);
+
+//                myDB.rawQuery(query, null);
+                    myDB.execSQL(query);
+                // open mainactivity again to refresh
+                Intent intent = new Intent(mContext, MainActivity.class);
+                mContext.startActivity(intent);
+
+            }
+        });
+    }
+
+    public void openDeleteDeckIntent(int position) {
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View view = li.inflate(R.layout.confirmation_dialog_layout, null);
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+        alertDialogBuilder.setView(view);
+
+        deleteDeckPopup = alertDialogBuilder.create();
+        deleteDeckPopup.show();
+
+        TextView confirmMessage = view.findViewById(R.id.tv_confirm_msg);
+        confirmMessage.setText("Do you want to delete this deck?");
+        Button save = view.findViewById(R.id.save);
+        Button cancel = view.findViewById(R.id.cancel);
+
+        save.setText("Confirm");
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = "DELETE FROM Words_List WHERE Deck_Name=\""+mDecksList.get(position).getDeckTitle()+"\";";
+
+                myDB.execSQL(query);
+
+                Intent intent = new Intent(mContext, MainActivity.class);
+                mContext.startActivity(intent);
+                Toast.makeText(mContext, "Deck deleted successfully!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDeckPopup.dismiss();
             }
         });
 

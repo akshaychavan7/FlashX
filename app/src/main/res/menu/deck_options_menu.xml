@@ -3,8 +3,8 @@
 
     <item android:id="@+id/deck_option_add_cards"
         android:title="Add Cards"/>
-    <item android:id="@+id/deck_option_edit"
-        android:title="Edit"/>
+    <item android:id="@+id/deck_option_rename"
+        android:title="Rename"/>
     <item android:id="@+id/deck_option_delete"
         android:title="Delete"/>
 </menu>

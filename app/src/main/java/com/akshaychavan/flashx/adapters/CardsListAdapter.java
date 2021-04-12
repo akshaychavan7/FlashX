@@ -94,7 +94,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         CardPojo currentItem = mCardsList.get(position);
 
-        Log.e("Holder", ">>>"+(holder==null)+" >>"+(holder.tvWord==null));
+//        Log.e("Holder", ">>>"+(holder==null)+" >>"+(holder.tvWord==null));
         holder.tvWord.setText(currentItem.getWord());
         holder.tvWordClass.setText(currentItem.getClass_());
         holder.tvWordDescription.setText(currentItem.getMeaning());
