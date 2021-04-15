@@ -150,6 +150,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }       // end onCreate()
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "Resumed");
+        // on resume load Decks Fragment by default
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DecksFragment()).commit();
+    }
+
     private void bindVariables() {
 //        signInButton = findViewById(R.id.sign_in_button);
 
@@ -362,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

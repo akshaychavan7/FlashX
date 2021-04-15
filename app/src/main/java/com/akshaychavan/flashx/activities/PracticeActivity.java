@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -237,15 +238,23 @@ public class PracticeActivity extends AppCompatActivity {
 
         int tempID = 1;
         for (CardPojo c : deckCardsList) {
-            Log.e(TAG, c.getWord() + " " + c.getLastFiveScores());
+
+
+            int score = 0;
+            // calculate score as sum of past five scores
+            for(String s: c.getLastFiveScores().split(",")) {
+                score+= Integer.parseInt(s);
+            }
 
             // update in database
-            String query = "UPDATE Words_List SET _id = " + tempID + ", Last_Five_Scores = \"" + c.getLastFiveScores() + "\", Score = " + quality + " WHERE Word = \"" + c.getWord() + "\" AND Deck_Name = \""+ deckName +"\";";
-            Log.e(TAG, "Query >>" + query);
+            String query = "UPDATE Words_List SET _id = " + tempID + ", Last_Five_Scores = \"" + c.getLastFiveScores() + "\", Score = " + score + " WHERE Word = \"" + c.getWord() + "\" AND Deck_Name = \""+ deckName +"\";";
+//            Log.e(TAG, "Query >>" + query);
 
             db.execSQL(query);
 
             tempID += 1;
+
+            Log.e(TAG, "Word: "+c.getWord() + " Last Five Score: " + c.getLastFiveScores()+" Score:"+score);
         }
     }
 
@@ -327,7 +336,23 @@ public class PracticeActivity extends AppCompatActivity {
         // Setting color of the cardside
         GradientDrawable backgroundGradient = (GradientDrawable) cardClassColor.getBackground();
         backgroundGradient.setColor(GlobalCode.getInstance().getWordClassColor(card.getClass_()));
+
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    //
+//    @Override
+//    protected void onDestroy() {            // NOTE: work to be done before closing this activity
+//        super.onDestroy();
+//
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//
+//    }
 
 }
