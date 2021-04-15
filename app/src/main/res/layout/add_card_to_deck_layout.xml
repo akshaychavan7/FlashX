@@ -108,7 +108,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="5dp"
                                 android:layout_weight="1"
-                                android:backgroundTint="#3F51B5"
+                                android:backgroundTint="#F06292"
                                 android:text="Verb"
                                 android:textAllCaps="false"
                                 android:textSize="12dp" />

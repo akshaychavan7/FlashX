@@ -107,40 +107,24 @@ public class DecksFragment extends Fragment {
 
         SQLiteDatabase db = myDatabaseHelper.getDatabase();
 
-        // Query ==> SELECT Deck_Name, COUNT(Deck_Name) FROM Words_List GROUP BY Deck_Name;                                         ==> this will return deckname and it's total cards count
-        // Query ==> SELECT Deck_Name, COUNT(Deck_Name) from "Words_List" WHERE Is_Mastered="Yes" GROUP BY Deck_Name;               ==> this will return deckname and it's mastered cards count
-
-        String query = "SELECT T1.Deck_Name,T2.cnt Total_cnt, T1.cnt Mastered_cnt" +
-                "   FROM (SELECT Deck_Name, COUNT(Deck_Name) cnt " +
-                "FROM Words_List WHERE Is_Mastered=\"Yes\" GROUP BY Deck_Name " +
-                "UNION " +
-                "SELECT Deck_Name, 0 cnt FROM Words_List W1 " +
-                "WHERE \"Yes\" NOT IN (SELECT Is_Mastered From Words_List WHERE W1.Deck_Name = Deck_Name ) GROUP BY Deck_Name) T1," +
-                " (SELECT Deck_Name, COUNT(Deck_Name) cnt FROM Words_List GROUP BY Deck_Name)T2 " +
-                "WHERE T1.Deck_Name = T2.Deck_Name;";
+        // to return deckname, it's total cards count and it's mastered words count
+        String query = "SELECT T1.Deck_Name,T2.cnt Total_cnt, T1.cnt Mastered_cnt " +
+                "FROM " +
+                "(SELECT Deck_Name, COUNT(Deck_Name) cnt " +
+                "FROM Words_List WHERE Score=5 GROUP BY Deck_Name UNION SELECT Deck_Name, 0 cnt " +
+                "FROM Words_List W1 WHERE 5 NOT IN (SELECT Score From Words_List WHERE W1.Deck_Name = Deck_Name ) GROUP BY Deck_Name) T1, " +
+                "(SELECT Deck_Name, COUNT(Deck_Name) cnt FROM Words_List GROUP BY Deck_Name)T2 WHERE T1.Deck_Name = T2.Deck_Name;";
 
         Log.e(TAG, "Query>>"+query);
-//        Log.e(TAG, "Query2>>"+query2);
-
         Cursor cursor = db.rawQuery(query, null);
-//        Cursor cursor2 = db.rawQuery(query2, null);
-
-
 
         // DB Columns ==> "_id", "Deck_Name", "Word", "Definition", "Class", "Synonyms", "Examples", "Mnemonic", "Image_URL", "Is_Mastered"
 
         while (cursor.moveToNext()) {
-//            cursor2.moveToNext();       // move cursor2 along with cursor1
-
             String deckname = cursor.getString(0);
             int totalCardsCount = cursor.getInt(1);
             int masteredWordsCount = cursor.getInt(2);
-//            if(cursor2.getCount() ==0) {
-//                masteredWordsCount = 0;
-//            }
-//            else {
-//                masteredWordsCount = cursor2.getInt(1);
-//            }
+
             decksList.add(new DeckPojo(deckname, masteredWordsCount, totalCardsCount));
         }
 

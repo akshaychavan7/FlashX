@@ -24,7 +24,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -46,6 +49,7 @@ public class GlobalCode {
 
 
     String colors[] = {"#2196F3", "#7E57C2", "#43A047","#F44336", "#4DD0E1", "#FF9800", "#7E57C2", "#AD1457", "#FFEA00"};
+    Map<String, String> wordClassColorDict = new HashMap<String, String>();
 
     public GlobalCode(Context context) {
         mContext = context;
@@ -69,6 +73,17 @@ public class GlobalCode {
         return Color.parseColor(colors[i % colors.length]);
     }
 
+    public int getWordClassColor(String key) {
+        // setting colors as per asset class
+        if(wordClassColorDict.size()!=4) {
+            wordClassColorDict.put("verb","#F06292");
+            wordClassColorDict.put("adjective","#2196F3");
+            wordClassColorDict.put("noun","#4CAF50");
+            wordClassColorDict.put("idiom","#FFC107");
+
+        }
+        return Color.parseColor(wordClassColorDict.get(key));
+    }
 
     public ArrayList<String> getDecksNamesList() {
         return decksNamesList;
@@ -188,16 +203,16 @@ public class GlobalCode {
         return null;
     }
 
-    public int getMasteredWordsCount(String deckName) {
-        int count = 0;
-
-        for (CardPojo card : getDeckCards(deckName)) {
-            if (card.getIsMastered().equalsIgnoreCase("Yes")) {
-                count++;
-            }
-        }
-        return count;
-    }
+//    public int getMasteredWordsCount(String deckName) {
+//        int count = 0;
+//
+//        for (CardPojo card : getDeckCards(deckName)) {
+//            if (card.getIsMastered().equalsIgnoreCase("Yes")) {
+//                count++;
+//            }
+//        }
+//        return count;
+//    }
 
     public boolean addCardToDeck(CardPojo card, int deckPosition) {
         if(!checkIfCardExistsInDeck(card, deckPosition)) {

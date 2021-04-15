@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ public class ViewCardsFragment extends Fragment {
     RecyclerView cardsListRecycler;
     RecyclerView.LayoutManager cardsListLayoutManager;
     RecyclerView.Adapter cardsListAdapter;
+
+    private final String TAG = "ViewCardsFragment";
 
 
     public ViewCardsFragment() {
@@ -88,6 +91,7 @@ public class ViewCardsFragment extends Fragment {
 
         getDeckCards();
 
+
         // Passing data to Adapter
         cardsListAdapter = new CardsListAdapter(deckCardsList, getContext());     // by default shares should be loaded
         cardsListRecycler.setLayoutManager(cardsListLayoutManager);
@@ -104,16 +108,26 @@ public class ViewCardsFragment extends Fragment {
         // Query ==> SELECT * FROM Words_List where Deck_Name = "Barron's 1100";
         String query  = "SELECT * FROM Words_List where Deck_Name = \""+deckName+"\"";
 
+        Log.e(TAG, "Query>>"+query);
+
         Cursor cursor = db.rawQuery(query, null);
 
-
-        //                  0         1         2         3           4          5           6           7          8            9
-        // DB Columns ==> "_id", "Deck_Name", "Word", "Definition", "Class", "Synonyms", "Examples", "Mnemonic", "Image_URL", "Is_Mastered"
-
+        //                 "_id"                                    0
+        //                "Deck_Name"                               1
+        //                "Word"                                    2
+        //                "Definition"                              3
+        //                "Class"                                   4
+        //                "Synonyms"                                5
+        //                "Examples"                                6
+        //                "Mnemonic"                                7
+        //                "Image_URL"                               8
+        //                "Last_Five_Scores"                        9
+        //                "Score"                                   10
 
         while (cursor.moveToNext()) {
             CardPojo cardPojo = new CardPojo();
 
+            cardPojo.set_id(cursor.getInt(0));
             cardPojo.setWord(cursor.getString(2));
             cardPojo.setClass_(cursor.getString(4));
             cardPojo.setMeaning(cursor.getString(3));
@@ -121,11 +135,12 @@ public class ViewCardsFragment extends Fragment {
             cardPojo.setSynonyms(cursor.getString(5));
             cardPojo.setMnemonic(cursor.getString(7));
             cardPojo.setImageURL(cursor.getString(8));
-            cardPojo.setIsMastered(cursor.getString(9));
+            cardPojo.setLastFiveScores(cursor.getString(9));
+            cardPojo.setScore(cursor.getInt(10));
 
             deckCardsList.add(cardPojo);
         }
-    }
+    }       // end getDeckCards()
 
 
 }

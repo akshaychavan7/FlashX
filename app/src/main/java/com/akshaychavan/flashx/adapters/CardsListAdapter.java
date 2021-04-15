@@ -96,7 +96,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
 
 //        Log.e("Holder", ">>>"+(holder==null)+" >>"+(holder.tvWord==null));
         holder.tvWord.setText(currentItem.getWord());
-        holder.tvWordClass.setText(currentItem.getClass_());
+        holder.tvWordClass.setText(currentItem.getClass_()+":");
         holder.tvWordDescription.setText(currentItem.getMeaning());
         holder.tvSynonyms.setText(currentItem.getSynonyms());
         holder.tvExample.setText(currentItem.getExample());
@@ -106,10 +106,11 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
 
 //        callGetWordData("Voracious");
 
+        Log.e(TAG, "Word class>>"+currentItem.getClass_());
 
         // Setting color of the cardside
         GradientDrawable backgroundGradient = (GradientDrawable) holder.cardClassColor.getBackground();
-        backgroundGradient.setColor(GlobalCode.getInstance().getColor(position));
+        backgroundGradient.setColor(GlobalCode.getInstance().getWordClassColor(currentItem.getClass_()));
 
         bindEvents(holder, position, currentItem);
     }

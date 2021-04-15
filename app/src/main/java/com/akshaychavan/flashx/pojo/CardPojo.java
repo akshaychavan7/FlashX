@@ -9,6 +9,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class CardPojo {
 
+    @SerializedName("_id")
+    @Expose
+    private int _id;
+
     @SerializedName("Word")
     @Expose
     private String word;
@@ -31,9 +35,14 @@ public class CardPojo {
     @Expose
     private String imageURL;
 
-    @SerializedName("IsMastered")
+    @SerializedName("Score")
     @Expose
-    private String isMastered;
+    private int score;
+
+    @SerializedName("Last_Five_Scores")
+    @Expose
+    private String lastFiveScores;
+
 
     public String getWord() {
         return word;
@@ -92,12 +101,28 @@ public class CardPojo {
         this.synonyms = synonyms;
     }
 
-    public String getIsMastered() {
-        return isMastered;
+    public String getLastFiveScores() {
+        return lastFiveScores;
     }
 
-    public void setIsMastered(String isMastered) {
-        this.isMastered = isMastered;
+    public void setLastFiveScores(String lastFiveScores) {
+        this.lastFiveScores = lastFiveScores;
     }
 
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

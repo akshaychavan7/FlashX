@@ -29,9 +29,24 @@
 
 
     <!-- Progressbar Circular   -->
-    <style name="CircularDeterminateProgressBar">
+    <style name="CircularDeterminateProgressBarYellow">
         <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/progress_circle</item>
+        <item name="android:progressDrawable">@drawable/progress_circle_yellow</item>
+    </style>
+
+    <style name="CircularDeterminateProgressBarRed">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_circle_blue</item>
+    </style>
+
+    <style name="CircularDeterminateProgressBarGreen">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_circle_green</item>
+    </style>
+
+    <style name="CircularDeterminateProgressBarOrange">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_circle_orange</item>
     </style>
 
 </resources>

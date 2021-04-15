@@ -64,6 +64,7 @@ import retrofit2.Response;
 public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.DecksViewHolder> implements Filterable, ActivityCompat.OnRequestPermissionsResultCallback {
 
     final String TAG = "DecksListAdapter";
+    final String SELECTED_DECK_KEY = "Selected_Deck";
     GlobalCode globalCode = GlobalCode.getInstance();
     // New Card Popup Variables
     ImageView ivImageBrowser;
@@ -167,6 +168,7 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
             public void onClick(View v) {
                 Toast.makeText(mContext, "Practice button clicked!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, PracticeActivity.class);
+                intent.putExtra(SELECTED_DECK_KEY, mDecksList.get(position).getDeckTitle());
                 mContext.startActivity(intent);
             }
         });
@@ -241,7 +243,7 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
 
     public void openAddNewCardIntent(int position) {
         LayoutInflater li = LayoutInflater.from(mContext);
-        View view = li.inflate(R.layout.create_new_deck_layout, null);
+        View view = li.inflate(R.layout.add_card_to_deck_layout, null);
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext, R.style.CustomDialog);
         alertDialogBuilder.setView(view);
