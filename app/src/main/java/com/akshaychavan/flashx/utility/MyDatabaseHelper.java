@@ -27,6 +27,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String DB_LOCATION = "/data/data/com.akshaychavan.flashx/databases/";
     private static final int DATABASE_VERSION = 1;
     public static final String TABLE_NAME = "Words_List";
+
+    //            "_id"
+//            "Deck_Name"
+//            "Word"
+//            "Definition"
+//            "Class"
+//            "Synonyms"
+//            "Examples"
+//            "Mnemonic"
+//            "Image_URL"
+//            "Last_Five_Scores"
+//            "Score"
     private static final String COLUMN_DECKNAME = "Deck_Name";
     private static final String COLUMN_WORD = "Word";
     private static final String COLUMN_DEFINITION = "Definition";
@@ -35,7 +47,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_EXAMPLES = "Examples";
     private static final String COLUMN_MNEMONIC = "Mnemonic";
     private static final String COLUMN_IMAGE_URL = "Image_URL";
-    private static final String COLUMN_IS_MASTERED = "Is_Mastered";
+    private static final String COLUMN_LAST_FIVE_SCORES = "Last_Five_Scores";
+    private static final String COLUMN_SCORE = "Score";
     private final String TAG = "MyDatabaseHelper";
     private SQLiteDatabase myDataBase;
     private Context context;
@@ -136,6 +149,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 //        cv.put();
     }
 
+
+//            "_id"
+//            "Deck_Name"
+//            "Word"
+//            "Definition"
+//            "Class"
+//            "Synonyms"
+//            "Examples"
+//            "Mnemonic"
+//            "Image_URL"
+//            "Last_Five_Scores"
+//            "Score"
+
     public void addCardToDeck( String deckName, CardPojo wordDetails) {
         //SQLiteDatabase db = this.getWritableDatabase();
 //        openDatabase();
@@ -149,7 +175,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_EXAMPLES, wordDetails.getExample());
         cv.put(COLUMN_MNEMONIC, wordDetails.getMnemonic());
         cv.put(COLUMN_IMAGE_URL, wordDetails.getImageURL());
-        cv.put(COLUMN_IS_MASTERED, "No");
+        cv.put(COLUMN_LAST_FIVE_SCORES, "0,0,0,1,1");
+        cv.put(COLUMN_SCORE, 2);
 
         if(!myDataBase.isOpen()) {
             openDataBase();

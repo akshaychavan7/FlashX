@@ -2,6 +2,7 @@ package com.akshaychavan.flashx.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,9 @@ import com.akshaychavan.flashx.pojo.WordDataPojo;
 import com.akshaychavan.flashx.utility.ApiClient;
 import com.akshaychavan.flashx.utility.ApiInterface;
 import com.akshaychavan.flashx.utility.GlobalCode;
+import com.bumptech.glide.Glide;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +99,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
 
 //        Log.e("Holder", ">>>"+(holder==null)+" >>"+(holder.tvWord==null));
         holder.tvWord.setText(currentItem.getWord());
-        holder.tvWordClass.setText(currentItem.getClass_()+":");
+        holder.tvWordClass.setText(currentItem.getClass_() + ":");
         holder.tvWordDescription.setText(currentItem.getMeaning());
         holder.tvSynonyms.setText(currentItem.getSynonyms());
         holder.tvExample.setText(currentItem.getExample());
@@ -104,9 +107,24 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
 
 //        holder.ivWordImage.setImageBitmap();
 
+        if (currentItem.getImageURL().contains("https") || currentItem.getImageURL().contains("http"))       // check if image is from web or from local storage
+        {
+            Glide.with(mContext)
+                    .load(currentItem.getImageURL()) // image url
+                    .placeholder(R.mipmap.loading_image) // any placeholder to load at start
+                    .error(R.mipmap.image_not_found)  // any image in case of error
+                    .override(200, 150) // resizing
+                    .centerCrop()
+                    .into(holder.ivWordImage);  // imageview object
+        } else {
+            Uri uri = Uri.parse(currentItem.getImageURL());
+            holder.ivWordImage.setImageURI(uri);
+        }
+
+
 //        callGetWordData("Voracious");
 
-        Log.e(TAG, "Word class>>"+currentItem.getClass_());
+        Log.e(TAG, "Word class>>" + currentItem.getClass_());
 
         // Setting color of the cardside
         GradientDrawable backgroundGradient = (GradientDrawable) holder.cardClassColor.getBackground();

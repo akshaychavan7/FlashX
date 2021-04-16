@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +17,7 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.akshaychavan.flashx.R;
 import com.akshaychavan.flashx.pojo.CardPojo;
 import com.akshaychavan.flashx.utility.GlobalCode;
 import com.akshaychavan.flashx.utility.MyDatabaseHelper;
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
@@ -41,7 +44,8 @@ public class PracticeActivity extends AppCompatActivity {
     Animation animation;
     MediaPlayer mp;
     ImageButton ibBack;
-    TextView tvFrontWord, tvWord, tvWordClass, tvWordDescription, tvSynonyms, tvExample, tvMnemonic;
+    TextView tvFrontWord, tvWord, tvWordClass, tvWordDescription, tvSynonyms, tvExample, tvMnemonic, tvMasteredCount, tvReviewingCount, tvLearningCount, tvTotalCount;
+    ProgressBar masteredProgressBar, reviewingProgressBar, learningProgressBar, totalProgressBar;
     TextView tvKnownBtn, tvNotKnownBtn;
     MaterialButton btnFrontLevel;
     ImageView ivWordImage;
@@ -90,6 +94,16 @@ public class PracticeActivity extends AppCompatActivity {
         tvSynonyms = findViewById(R.id.tv_synonyms);
         tvExample = findViewById(R.id.tv_example);
         tvMnemonic = findViewById(R.id.tv_mnemonic);
+        tvMasteredCount = findViewById(R.id.tv_mastered_count);
+        tvReviewingCount = findViewById(R.id.tv_reviewing_count);
+        tvLearningCount = findViewById(R.id.tv_learning_count);
+        tvTotalCount = findViewById(R.id.tv_total_count);
+
+        masteredProgressBar = findViewById(R.id.progressBar);
+        reviewingProgressBar = findViewById(R.id.progressBar2);
+        learningProgressBar = findViewById(R.id.progressBar3);
+        totalProgressBar = findViewById(R.id.progressBar4);
+
         ivWordImage = findViewById(R.id.iv_word_image);
         cardClassColor = findViewById(R.id.v_card_class_color);
 
@@ -333,9 +347,51 @@ public class PracticeActivity extends AppCompatActivity {
         tvExample.setText(card.getExample());
         tvMnemonic.setText(card.getMnemonic());
 
+        if (card.getImageURL().contains("https") || card.getImageURL().contains("http"))       // check if image is from web or from local storage
+        {
+            Glide.with(PracticeActivity.this)
+                    .load(card.getImageURL()) // image url
+                    .placeholder(R.mipmap.loading_image) // any placeholder to load at start
+                    .error(R.mipmap.image_not_found)  // any image in case of error
+                    .override(200, 150) // resizing
+                    .centerCrop()
+                    .into(ivWordImage);  // imageview object
+        } else {
+            Uri uri = Uri.parse(card.getImageURL());
+            ivWordImage.setImageURI(uri);
+        }
+
         // Setting color of the cardside
         GradientDrawable backgroundGradient = (GradientDrawable) cardClassColor.getBackground();
         backgroundGradient.setColor(GlobalCode.getInstance().getWordClassColor(card.getClass_()));
+
+        int masteredCount = 0, reviewingCount = 0, learningCount = 0;
+        for(CardPojo c: deckCardsList) {
+            switch (c.getScore()) {
+                case 5:
+                    masteredCount++;
+                break;
+                case 4:
+                case 3:
+                case 2:
+                    reviewingCount++;
+                    break;
+                case 1:
+                    learningCount++;
+                    break;
+            }
+        }
+
+        tvMasteredCount.setText(""+masteredCount);
+        tvReviewingCount.setText(""+reviewingCount);
+        tvLearningCount.setText(""+learningCount);
+        tvTotalCount.setText(""+deckCardsList.size());
+
+        masteredProgressBar.setProgress(masteredCount);
+        reviewingProgressBar.setProgress(reviewingCount);
+        learningProgressBar.setProgress(learningCount);
+        totalProgressBar.setProgress(deckCardsList.size());
+
 
     }
 
@@ -344,15 +400,4 @@ public class PracticeActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
-
-    //
-//    @Override
-//    protected void onDestroy() {            // NOTE: work to be done before closing this activity
-//        super.onDestroy();
-//
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-//
-//    }
-
 }

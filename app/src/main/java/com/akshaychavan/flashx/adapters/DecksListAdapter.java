@@ -483,17 +483,6 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
 
         myDB.addCardToDeck(mDecksList.get(deckPosition).getDeckTitle(), card);
 
-
-//        boolean cardAddResponseFlag = globalCode.addCardToDeck(card, deckPosition);
-//
-//        if (cardAddResponseFlag) {
-//            Toast.makeText(mContext, "Card added successfully!", Toast.LENGTH_SHORT).show();
-//            return true;
-//        } else {
-//            Toast.makeText(mContext, "Card already exists in the deck!", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-
     }
 
     // to check if required fields are blank or not

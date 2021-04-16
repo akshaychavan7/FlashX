@@ -52,7 +52,7 @@
             android:id="@+id/fl_card"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -109,7 +109,7 @@
             android:id="@+id/fl_card_details"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
         <View
@@ -348,6 +348,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_mastered_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="45"
@@ -394,6 +395,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_reviewing_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="45"
@@ -439,6 +441,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_learning_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="45"
@@ -485,6 +488,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_total_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="50"
