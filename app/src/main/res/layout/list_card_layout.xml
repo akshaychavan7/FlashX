@@ -86,6 +86,7 @@
 
 
                         <ImageView
+                            android:id="@+id/iv_cards_list_options"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/triple_dots_icon_24"

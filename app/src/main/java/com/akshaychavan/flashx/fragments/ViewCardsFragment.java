@@ -93,7 +93,7 @@ public class ViewCardsFragment extends Fragment {
 
 
         // Passing data to Adapter
-        cardsListAdapter = new CardsListAdapter(deckCardsList, getContext());     // by default shares should be loaded
+        cardsListAdapter = new CardsListAdapter(deckCardsList, getContext(), ViewCardsFragment.this);     // by default shares should be loaded
         cardsListRecycler.setLayoutManager(cardsListLayoutManager);
         cardsListRecycler.setAdapter(cardsListAdapter);
 

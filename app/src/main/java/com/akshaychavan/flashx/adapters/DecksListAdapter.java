@@ -74,10 +74,10 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
     ProgressBar progressBar;
     String selectedWordClass;
     AlertDialog addNewCardPopup, renameDeckPopup, deleteDeckPopup;
-    private ArrayList<DeckPojo> mDecksList, mDecksListFull;
     ///////////////////////////
     MyDatabaseHelper myDatabaseHelper;
     SQLiteDatabase myDB;
+    private ArrayList<DeckPojo> mDecksList, mDecksListFull;
     ///////////////////////////
     public Filter assetSearchFilter = new Filter() {
         @Override
@@ -176,8 +176,8 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         holder.tvResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = "UPDATE Words_List SET Is_Mastered=\"No\" WHERE Deck_Name = \""+mDecksList.get(position).getDeckTitle()+"\";";
-                Log.e(TAG, "Query>>"+query);
+                String query = "UPDATE Words_List SET Last_Five_Scores=\"0,0,0,1,1\", Score = \"2\" WHERE Deck_Name = \"" + mDecksList.get(position).getDeckTitle() + "\";";
+                Log.e(TAG, "Query>>" + query);
                 myDB.execSQL(query);
 
                 // refresh
@@ -409,11 +409,11 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = "UPDATE Words_List SET Deck_Name = \""+etNewDeckName.getText().toString().trim()+"\" WHERE Deck_Name=\""+ mDecksList.get(position).getDeckTitle() +"\";";
-                Log.e(TAG, "Query>>"+query);
+                String query = "UPDATE Words_List SET Deck_Name = \"" + etNewDeckName.getText().toString().trim() + "\" WHERE Deck_Name=\"" + mDecksList.get(position).getDeckTitle() + "\";";
+                Log.e(TAG, "Query>>" + query);
 
 //                myDB.rawQuery(query, null);
-                    myDB.execSQL(query);
+                myDB.execSQL(query);
                 // open mainactivity again to refresh
                 Intent intent = new Intent(mContext, MainActivity.class);
                 mContext.startActivity(intent);
@@ -442,7 +442,7 @@ public class DecksListAdapter extends RecyclerView.Adapter<DecksListAdapter.Deck
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = "DELETE FROM Words_List WHERE Deck_Name=\""+mDecksList.get(position).getDeckTitle()+"\";";
+                String query = "DELETE FROM Words_List WHERE Deck_Name=\"" + mDecksList.get(position).getDeckTitle() + "\";";
 
                 myDB.execSQL(query);
 

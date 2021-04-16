@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView tvUsername, tvEmail, tvMadeBy;
     ImageView ivProfileIcon;
     GlobalCode globalCode;
-    private DrawerLayout drawerLayout;
-
     //////////////////////////////////////////////////////////////////
     AlertDialog addNewDeckPopup, addNewCardPopup;
     String newDeckName = null;
@@ -96,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MaterialButton verbBtn, adjBtn, nounBtn, idiomBtn;
     ProgressBar progressBar;
     String selectedWordClass;
+    private DrawerLayout drawerLayout;
     //////////////////////////////////////////////////////////////////
 
     //    @Override
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         // check if database exists
-        File database =  getDatabasePath(MyDatabaseHelper.DATABASE_NAME);
+        File database = getDatabasePath(MyDatabaseHelper.DATABASE_NAME);
 
         MyDatabaseHelper myDbHelper = MyDatabaseHelper.getInstance(MainActivity.this);
         try {
@@ -254,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         SQLiteDatabase db = myDatabaseHelper.getDatabase();
 
-                        String query  = "UPDATE "+myDatabaseHelper.getTableName()+" set Is_Mastered = \"No\";";
+                        String query = "UPDATE " + myDatabaseHelper.getTableName() + " set Last_Five_Scores = \"0,0,0,1,1\", Score=\"2\";";
 
 //                        db.rawQuery(query, null);
                         db.execSQL(query);
@@ -312,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e(TAG, "Error while copying DB >>"+e.getMessage());
+            Log.e(TAG, "Error while copying DB >>" + e.getMessage());
             return false;
         }
     }
@@ -697,7 +696,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setSkipZeroSizeFiles(true)
                         .build());
 
-      startActivityForResult(intent, 101);
+        startActivityForResult(intent, 101);
     }
 
     public void getWordDetails(String word) {
