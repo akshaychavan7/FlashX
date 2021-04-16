@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akshaychavan.flashx.R;
+import com.akshaychavan.flashx.activities.PracticeActivity;
 import com.akshaychavan.flashx.pojo.CardPojo;
 import com.akshaychavan.flashx.pojo.WordDataPojo;
 import com.akshaychavan.flashx.utility.ApiClient;
@@ -30,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +45,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
 
     final String TAG = "CardsListAdapter";
     private ArrayList<CardPojo> mCardsList, mCardsListFull;
+    TextToSpeech textToSpeech;
 
 
     public Filter assetSearchFilter = new Filter() {
@@ -97,6 +101,30 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         CardPojo currentItem = mCardsList.get(position);
 
+        textToSpeech = new TextToSpeech(mContext, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS) {
+                    int result = textToSpeech.setLanguage(Locale.ENGLISH);
+
+                    if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Toast.makeText(mContext, "Language not supported for text to speech!", Toast.LENGTH_SHORT).show();
+                    } else{
+                        holder.ivTextToSpeechList.setEnabled(true);
+                    }
+                } else {
+                    Toast.makeText(mContext, "Text to Speech initialization failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        holder.ivTextToSpeechList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak(holder);
+            }
+        });
+
 //        Log.e("Holder", ">>>"+(holder==null)+" >>"+(holder.tvWord==null));
         holder.tvWord.setText(currentItem.getWord());
         holder.tvWordClass.setText(currentItem.getClass_() + ":");
@@ -147,6 +175,20 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
         return assetSearchFilter;
     }
 
+    public void speak(CardViewHolder holder) {
+        String word = holder.tvWord.getText().toString();
+        float pitch = 1f;
+        float speed = 0.5f;
+
+        textToSpeech.setPitch(pitch);
+        textToSpeech.setSpeechRate(speed);
+
+        textToSpeech.speak(word, TextToSpeech.QUEUE_ADD, null);
+
+        String meaning= holder.tvWordClass.getText()+",,,,"+holder.tvWordDescription.getText();
+        textToSpeech.speak(meaning, TextToSpeech.QUEUE_ADD, null);
+    }
+
 
     public void callGetWordData(String word) throws IOException {
 
@@ -182,7 +224,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
         TextView tvWord, tvWordClass, tvWordDescription, tvSynonyms, tvExample, tvMnemonic;
-        ImageView ivWordImage;
+        ImageView ivWordImage, ivTextToSpeechList;
         View cardClassColor;
 
         public CardViewHolder(@NonNull View itemView) {
@@ -197,6 +239,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Card
             tvMnemonic = itemView.findViewById(R.id.tv_mnemonic);
 
             ivWordImage = itemView.findViewById(R.id.iv_word_image);
+            ivTextToSpeechList = itemView.findViewById(R.id.iv_text_to_speech_list);
 
             cardClassColor = itemView.findViewById(R.id.v_card_class_color);
 

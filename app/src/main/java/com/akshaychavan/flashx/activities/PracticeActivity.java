@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,6 +33,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PracticeActivity extends AppCompatActivity {
 
@@ -47,6 +49,8 @@ public class PracticeActivity extends AppCompatActivity {
     TextView tvFrontWord, tvWord, tvWordClass, tvWordDescription, tvSynonyms, tvExample, tvMnemonic, tvMasteredCount, tvReviewingCount, tvLearningCount, tvTotalCount;
     ProgressBar masteredProgressBar, reviewingProgressBar, learningProgressBar, totalProgressBar;
     TextView tvKnownBtn, tvNotKnownBtn;
+    ImageView ivTextToSpeech;
+    TextToSpeech textToSpeech;
     MaterialButton btnFrontLevel;
     ImageView ivWordImage;
     View cardClassColor;
@@ -98,6 +102,8 @@ public class PracticeActivity extends AppCompatActivity {
         tvReviewingCount = findViewById(R.id.tv_reviewing_count);
         tvLearningCount = findViewById(R.id.tv_learning_count);
         tvTotalCount = findViewById(R.id.tv_total_count);
+
+        ivTextToSpeech = findViewById(R.id.iv_text_to_speech);
 
         masteredProgressBar = findViewById(R.id.progressBar);
         reviewingProgressBar = findViewById(R.id.progressBar2);
@@ -210,8 +216,60 @@ public class PracticeActivity extends AppCompatActivity {
             }
         });
 
+
+        // setup text to speech event
+        textToSpeech = new TextToSpeech(PracticeActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS) {
+                    int result = textToSpeech.setLanguage(Locale.ENGLISH);
+
+                    if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+//                        Toast.makeText(PracticeActivity.this, "Language not supported for text to speech!", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Language not supported for text to speech!");
+                    } else{
+                        ivTextToSpeech.setEnabled(true);
+                    }
+                } else {
+                    Toast.makeText(PracticeActivity.this, "Text to Speech initialization failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        ivTextToSpeech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak();
+            }
+        });
+
     }       // end bindEvents()
 
+    public void speak() {
+        String word = tvWord.getText().toString();
+        float pitch = 1f;
+        float speed = 0.5f;
+
+        textToSpeech.setPitch(pitch);
+        textToSpeech.setSpeechRate(speed);
+
+        textToSpeech.speak(word, TextToSpeech.QUEUE_ADD, null);
+
+        String meaning= tvWordClass.getText()+",,,,"+tvWordDescription.getText();
+        textToSpeech.speak(meaning, TextToSpeech.QUEUE_ADD, null);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        if(textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+
+        super.onDestroy();
+    }
 
     // NOTE: Initial default quality as 1,1,0,0,0 -> i.e. Medium
     // NOTE: HARD_SHIFT = 5, MEDIUM_SHIFT = 10, EASY_SHIFT = 15

@@ -74,6 +74,7 @@
                                 android:textStyle="bold"
                                 />
                             <ImageView
+                                android:id="@+id/iv_text_to_speech_list"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
