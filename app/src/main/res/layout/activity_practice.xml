@@ -168,6 +168,7 @@
 
 
                     <ImageView
+                        android:id="@+id/iv_practice_options"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
