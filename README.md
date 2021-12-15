@@ -1,6 +1,8 @@
 # FlashX
 
-FlashX is a personalized vocabulary flashcards app which user can use to make their vocabulary strong. It is based on spaced repetition algorithm.
+- FlashX is a personalized vocabulary flashcards app intended to simplify the vocabulary preparation process for the English language exams like GRE, TOEFL, and IELTS.
+- This app provides visual hints for better and long-term retention and also allows users to create personalized decks with their own picked words. It also has a smart definition detection system where a definition, synonyms, and sample sentences for the word get automatically detected whenever a user types any word.
+- Algorithm used: SM-0 Spaced Repetition Algorithm
 
 **NOTE:**
  - The app is still in development and yet to completed.
